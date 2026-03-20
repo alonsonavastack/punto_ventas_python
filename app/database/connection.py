@@ -2,9 +2,18 @@ import mysql.connector
 from mysql.connector import Error
 from dotenv import load_dotenv
 import os
+import sys
 import threading
 
-load_dotenv()
+# Cargar .env desde la carpeta del .exe (instalado) o del script (dev)
+if getattr(sys, 'frozen', False):
+    _base = os.path.dirname(sys.executable)
+else:
+    _base = os.path.dirname(os.path.abspath(__file__))
+    _base = os.path.join(_base, '..', '..')  # subir a raiz del proyecto
+
+_env_path = os.path.join(_base, '.env')
+load_dotenv(dotenv_path=_env_path)
 
 
 class Database:

@@ -13,7 +13,7 @@ set PORT=3307
 
 :: Verificar si ya está corriendo
 tasklist /FI "IMAGENAME eq mysqld.exe" 2>NUL | find /I /N "mysqld.exe" >NUL
-if "%ERRORLEVEL%"=="0" (
+if not errorlevel 1 (
     echo [OK] MariaDB ya esta corriendo.
     exit /b 0
 )
@@ -40,7 +40,7 @@ set /A intentos=0
 timeout /T 1 /NOBREAK >NUL
 set /A intentos+=1
 "%MARIA_DIR%\bin\mysqladmin.exe" -u root -padmin123 --port=%PORT% ping >NUL 2>&1
-if "%ERRORLEVEL%"=="0" (
+if not errorlevel 1 (
     echo [OK] MariaDB lista.
     exit /b 0
 )

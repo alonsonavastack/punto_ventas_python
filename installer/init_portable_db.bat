@@ -51,18 +51,30 @@ if errorlevel 1 (
 
 :: Crear base de datos
 echo [3/4] Creando base de datos punto_ventas...
-"%MARIA_DIR%\bin\mysql.exe" -u root -padmin123 --port=%PORT% -e "CREATE DATABASE IF NOT EXISTS punto_ventas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>NUL
-if errorlevel 1 (
-    echo [ERROR] No se pudo crear la base de datos.
-    pause
-    exit /b 1
+
+:: Intentar primero sin password (MariaDB recien inicializada suele no tener password)
+"%MARIA_DIR%\bin\mysql.exe" -u root --password= --port=%PORT% --connect-timeout=10 -e "CREATE DATABASE IF NOT EXISTS punto_ventas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>NUL
+if not errorlevel 1 (
+    echo [INFO] Conexion sin password exitosa. Estableciendo password...
+    "%MARIA_DIR%\bin\mysql.exe" -u root --password= --port=%PORT% --connect-timeout=10 -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'admin123'; FLUSH PRIVILEGES;" 2>NUL
+    goto :DB_CREADA
 )
+
+:: Si falla, intentar con password admin123
+"%MARIA_DIR%\bin\mysql.exe" -u root -padmin123 --port=%PORT% --connect-timeout=10 -e "CREATE DATABASE IF NOT EXISTS punto_ventas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>NUL
+if not errorlevel 1 goto :DB_CREADA
+
+echo [ERROR] No se pudo crear la base de datos. Verifica el log en %LOG_DIR%\mariadb.log
+pause
+exit /b 1
+
+:DB_CREADA
 echo [OK] Base de datos creada.
 
 :: Importar schema
 echo [4/4] Importando estructura de tablas...
 if exist "%SCHEMA%" (
-    "%MARIA_DIR%\bin\mysql.exe" -u root -padmin123 --port=%PORT% punto_ventas < "%SCHEMA%"
+    "%MARIA_DIR%\bin\mysql.exe" -u root -padmin123 --port=%PORT% --connect-timeout=10 punto_ventas < "%SCHEMA%"
     if errorlevel 1 (
         echo [ERROR] Fallo al importar schema.
         pause

@@ -5,7 +5,7 @@ a = Analysis(
     ['C:\\Users\\Pc\\Desktop\\punto_ventas\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\Pc\\Desktop\\punto_ventas\\assets', 'assets'), ('C:\\Users\\Pc\\Desktop\\punto_ventas\\app', 'app'), ('C:\\Users\\Pc\\Desktop\\punto_ventas\\.env.example', '.'), ('C:\\Users\\Pc\\Desktop\\punto_ventas\\venv\\Lib\\site-packages\\mysql\\connector\\locales', 'mysql/connector/locales')],
+    datas=[('C:\\Users\\Pc\\Desktop\\punto_ventas\\assets', 'assets'), ('C:\\Users\\Pc\\Desktop\\punto_ventas\\app', 'app'), ('C:\\Users\\Pc\\Desktop\\punto_ventas\\.env.example', '.'), ('C:\\Users\\Pc\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\mysql\\connector\\locales', 'mysql/connector/locales')],
     hiddenimports=['customtkinter', 'mysql.connector', 'PIL._tkinter_finder', 'reportlab', 'dotenv', 'tkinter', 'tkinter.ttk', 'mysql.connector.locales', 'mysql.connector.locales.eng', 'mysql.connector.plugins', 'mysql.connector.plugins.mysql_native_password', 'cv2', 'pyzbar', 'pyzbar.pyzbar'],
     hookspath=[],
     hooksconfig={},
@@ -35,4 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['C:\\Users\\Pc\\Desktop\\punto_ventas\\assets\\images\\logo.ico'],
 )

@@ -26,24 +26,29 @@ def _arrancar_mariadb_portable():
         capture_output=True, text=True
     )
     if 'mysqld.exe' in result.stdout:
+        print('[OK] MariaDB ya estaba corriendo.')
         return True
-    # Arrancar
+    # Arrancar — usar comillas en la ruta para soportar espacios
     print('[INFO] Iniciando MariaDB portable...')
-    subprocess.Popen([start_bat], creationflags=subprocess.CREATE_NO_WINDOW, shell=True)
+    subprocess.Popen(
+        f'cmd /c "{start_bat}"',
+        creationflags=subprocess.CREATE_NO_WINDOW,
+        shell=False
+    )
     mysqladmin = os.path.join(mariadb_dir, 'bin', 'mysqladmin.exe')
-    for _ in range(15):
+    for i in range(20):          # esperar hasta 20 segundos
         time.sleep(1)
         try:
             r = subprocess.run(
                 [mysqladmin, '-u', 'root', '-padmin123', '--port=3307', 'ping'],
-                capture_output=True, timeout=2
+                capture_output=True, timeout=3
             )
             if r.returncode == 0:
-                print('[OK] MariaDB lista.')
+                print(f'[OK] MariaDB lista (intento {i+1}).')
                 return True
         except Exception:
             pass
-    print('[ERROR] MariaDB no respondió.')
+    print('[ERROR] MariaDB no respondió en 20 segundos.')
     return False
 
 def _configurar_env_portable():
