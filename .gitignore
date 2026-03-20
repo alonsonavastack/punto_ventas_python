@@ -1,0 +1,49 @@
+# macOS
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Entorno virtual (no subir)
+venv/
+env/
+.venv/
+
+# Variables de entorno con credenciales (no subir)
+.env
+.env.local
+.env.production
+
+# Reportes PDF generados
+reports/*.pdf
+reports/*.csv
+
+# Backups con datos reales
+*backup*.sql
+backup_*.sql
+
+# Comprimidos
+*.zip
+*.tar.gz
+*.rar
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
